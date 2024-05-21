@@ -1,80 +1,76 @@
-const express = require("express");
-const app = express();
-app.use(express.json());
-const PORT = 3000;
-
-app.get("/", (req, res) => {
-  res.send("Hello from Express!");
-});
-
-app.listen(PORT, () => {
-  console.log(`Express server running at http://localhost:${PORT}/`);
-});
-
-// ##############################################################################
-
-const { exec } = require("node:child_process");
-const fs = require("fs");
+// Import the required modules
+const readFile = require("fs").promises.readFile;
+const writeFile = require("fs").promises.writeFile;
+const JSZip = require("jszip");
+const fs = require("fs-extra");
 const path = require("path");
 
-// Get the current directory path
-const currentDirectory = __dirname;
+const body = new FormData();
+const zip = new JSZip();
 
-app.post("/fit", (req, res) => {
-  // Extract the data and params from the request
-  const dataJson = req.body;
-  console.log("Data received: ", dataJson);
+const sendRequest = async () => {
+  try {
+    // Read the content of the file
+    const fileContents = await readFile("./Master-Mz-to-R1profie_test.sav");
 
-  const dataString = JSON.stringify(dataJson, null, 2);
+    // Create a blob from the file content
+    const blob = new Blob([fileContents]);
 
-  // To Do: How to deal with multiple users and fits?
-  // Construct the file path to the data.json where the data will be stored
-  const fileName = "data.json";
-  const filePath = path.join(currentDirectory, fileName);
+    // Specify which file to download:
+    // "zip" - downloads all output files as a ZIP file
+    // "filename" - downloads the specified file
+    // "outputFilename.json" - downloads the output JSON file
+    // "" - does not download any file, returns a text response with the fitting parameters
+    body.set("download", "zip");
 
-  // Write the data string to the file
-  fs.writeFile(filePath, dataString, (err) => {
-    if (err) {
-      console.error("Error writing file:", err);
-      res.status(500).send("Error writing file");
-      return;
-    }
-    console.log(
-      "JSON data saved successfully in the same directory as the script."
+    // Attach the file to the body
+    // Allowed files include .json and .sav
+    body.set("file", blob, "Master-Mz-to-R1profie_test.sav");
+
+    // Send the request to the server
+    const res = await fetch(
+      "http://onefite-t.vps.tecnico.ulisboa.pt:8142/fit",
+      {
+        method: "POST",
+        body,
+      }
     );
-  });
 
-  // Execute the "onefite fit <input-file>" command
-  exec("dir", (err, output) => {
-    if (err) {
-      console.error(
-        "Could not execute command 'onefite fit <input-file>': ",
-        err
-      );
-      
-      return;
+    // If no download files are specified, you can fetch a text response containing the fitting parameters
+    // const textRes = await res.text();
+    // console.log("Response received:", textRes);
+
+    // If the response is a JSON file, you can fetch it as follows
+    // It is then stored in an object you can access with simple dot notation
+    // const jsonRes = await res.json();
+    // console.log("Response received:", jsonRes);
+
+    // Fetch the raw data of the response, which is a ZIP file
+    const rawFileData = await res.arrayBuffer();
+
+    // Extract the files from the ZIP
+    const zipFile = await zip.loadAsync(rawFileData);
+    const files = zipFile.files;
+
+    // Log the files in the ZIP
+    console.log("Files in the ZIP:", files);
+
+    // Save the files to the disk
+    for (const file in files) {
+      // Ignore directories
+      if (!files[file].dir) {
+        const fileContent = await files[file].async("nodebuffer");
+        const filePath = "./" + file;
+        // Ensure the directory to store the file exists
+        await fs.ensureDir(path.dirname(filePath));
+        await writeFile(filePath, fileContent);
+      }
     }
-    // log the output received from the command
-    console.log("Output: \n", output);
-  });
+  } catch (err) {
+    // Log any errors that occur
+    console.error("Error sending request:", err);
+  }
+};
 
-  // Path to the generated output file
-  const generatedFilePath = path.join(currentDirectory, "output.json");
-
-  // To Do: Extract the necessary parameters from the output files
-
-  fs.readFile(generatedFilePath, "utf8", (err, data) => {
-    if (err) {
-      console.error("Error reading file:", err);
-      res.status(500).send("Error reading file");
-      return;
-    }
-
-    // Process the file data and build a JSON with it
-    const outputJson = JSON.stringify(data);
-
-    // Send a response to the client in JSON format
-    res.json(outputJson);
-  });
-  
-});
+// Call the function to send the request
+sendRequest();

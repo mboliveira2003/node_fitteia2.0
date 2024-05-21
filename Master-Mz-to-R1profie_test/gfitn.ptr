@@ -1,0 +1,12 @@
+x0 0x562692be3770 0 # x0: identity function
+x1 0x562692be3780 0 # x1: linear function
+x2 0x562692be3790 0 # x2: power 2
+x3 0x562692be37a0 0 # x3: power 3
+x4 0x562692be37b0 0 # x4: power 4
+x5 0x562692be37c0 0 # x5: power 5
+x6 0x562692be37d0 0 # x6: power 6
+xn 0x562692be37e0 1 # xn(p): where p is the fitting parameter in x^p)
+exp 0x562692be3930 1 # exp(p): where p is the fitting parameter in exp(p*x)
+userfitf0 0x562692be0f20 1 # userfitf0(Minf): 
+userfitf1 0x562692be1040 1 # userfitf1(Minf,M0,T11,c): 
+userfitf2 0x562692be1450 1 # userfitf2(Minf,M0,c,T12): 

@@ -1,0 +1,28 @@
+OneFit, version 3.1.
+Thank you for using OneFit. Every constructive criticism is welcome.
+
+OneFit is free software with ABSOLUTLY NO WARRANTY.
+
+It provides a way of performing non-linear data fitting of user
+defined functions compiled with the OneFit kernel program.
+
+OneFit accesses non-linear fitting parameters through their names
+independently of their order in the parameter file.
+You may find it usefull to use X1fit (OneFit GUI) to manage OneFit
+
+Copyright (C) 1990-2024, Pedro José Oliveira Sebastião
+
+9 functions in memory during the gfitn run.
+12 functions in memory during the gfitn run.
+userfitf0 Minf 
+Gfitn1:decode fnames=userfitf0 with args arg=Minf 
+gfitn:Cfunc=userfitf0
+userfitf1 Minf,M0,T11,c 
+Gfitn1:decode fnames=userfitf1 with args arg=Minf  arg=M0  arg=T11  arg=c 
+gfitn:Cfunc=userfitf1
+userfitf2 Minf,M0,c,T12 
+Gfitn1:decode fnames=userfitf2 with args arg=Minf  arg=M0  arg=c  arg=T12 
+gfitn:Cfunc=userfitf2
+Fitting 1 data curves
+Gfitn warning: 20 data points read from data1.dat
+Data file: data1.dat
