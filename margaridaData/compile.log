@@ -1,0 +1,22 @@
+rm -f *.o *~ *_ *.gph *.gp_ gnu*
+swig -perl AuxCode.i
+gcc -c -D_REENTRANT -D_GNU_SOURCE -DDEBIAN -fstack-protector -fno-strict-aliasing -pipe -I/usr/local/include -D_LARGEFILE_SOURCE -D_FILE_OFFSET_BITS=64 -O2 -g -fPIC -I\/usr/lib/x86_64-linux-gnu/perl/5.36/CORE  -I\/include AuxCode.c AuxCode_wrap.c -I/home/ofe/.local/OneFit-Engine/include
+gcc -shared -L/usr/local/lib -fstack-protector -O2 -g  AuxCode.o AuxCode_wrap.o -o AuxCode.so
+rm AuxCode_wrap.o AuxCode_wrap.c
+gcc -DLINUX -fPIC -O2 -Wall -Werror=implicit-function-declaration -Dbool=char -DHAS_BOOL -I/usr/lib/x86_64-linux-gnu/perl/5.36/CORE -I/home/ofe/.local/OneFit-Engine/include    -c -o tabfunc.o tabfunc.c
+gcc -DLINUX -fPIC -O2 -Wall -Werror=implicit-function-declaration -Dbool=char -DHAS_BOOL -I/usr/lib/x86_64-linux-gnu/perl/5.36/CORE -I/home/ofe/.local/OneFit-Engine/include    -c -o userfitf0.o userfitf0.c
+In file included from userfitf0.c:7:
+ndata.h:4:15: warning: ‘Matrix_dum’ defined but not used [-Wunused-variable]
+    4 | static double Matrix_dum[][2]={
+      |               ^~~~~~~~~~
+gcc -DLINUX -fPIC -O2 -Wall -Werror=implicit-function-declaration -Dbool=char -DHAS_BOOL -I/usr/lib/x86_64-linux-gnu/perl/5.36/CORE -I/home/ofe/.local/OneFit-Engine/include    -c -o userfitf1.o userfitf1.c
+In file included from userfitf1.c:7:
+ndata.h:4:15: warning: ‘Matrix_dum’ defined but not used [-Wunused-variable]
+    4 | static double Matrix_dum[][2]={
+      |               ^~~~~~~~~~
+gcc -DLINUX -fPIC -O2 -Wall -Werror=implicit-function-declaration -Dbool=char -DHAS_BOOL -I/usr/lib/x86_64-linux-gnu/perl/5.36/CORE -I/home/ofe/.local/OneFit-Engine/include    -c -o userfitf2.o userfitf2.c
+In file included from userfitf2.c:7:
+ndata.h:4:15: warning: ‘Matrix_dum’ defined but not used [-Wunused-variable]
+    4 | static double Matrix_dum[][2]={
+      |               ^~~~~~~~~~
+gcc -DLINUX -fPIC -O2 -Wall -Werror=implicit-function-declaration -Dbool=char -DHAS_BOOL -I/usr/lib/x86_64-linux-gnu/perl/5.36/CORE -I/home/ofe/.local/OneFit-Engine/include AuxCode.o tabfunc.o userfitf0.o userfitf1.o userfitf2.o -L/home/ofe/.local/OneFit-Engine/lib -luserlib -lonefit-4.0.2 -lonefit-modelos-4.0.2 -lonefit-util-4.0.2 -L/usr/lib  -lmathlib -lpacklib  -lm  -o onefit-user 

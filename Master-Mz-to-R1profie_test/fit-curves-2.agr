@@ -82,7 +82,7 @@
 @timestamp rot 0
 @timestamp font 4
 @timestamp char size 1.000000
-@timestamp def "Tue May 21 20:35:57 2024"
+@timestamp def "Mon Jun  3 17:17:31 2024"
 @with string
 @    string on
 @    string loctype view

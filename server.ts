@@ -11,7 +11,7 @@ const zip = new JSZip();
 const sendRequest = async () => {
   try {
     // Read the content of the file
-    const fileContents = await readFile("./Master-Mz-to-R1profie_test.sav");
+    const fileContents = await readFile("./margaridaData.sav");
 
     // Create a blob from the file content
     const blob = new Blob([fileContents]);
@@ -21,11 +21,12 @@ const sendRequest = async () => {
     // "filename" - downloads the specified file
     // "outputFilename.json" - downloads the output JSON file
     // "" - does not download any file, returns a text response with the fitting parameters
-    body.set("download", "zip");
+    body.set("download", "json");
+    body.set("username", "mboliveira");
 
     // Attach the file to the body
     // Allowed files include .json and .sav
-    body.set("file", blob, "Master-Mz-to-R1profie_test.sav");
+    body.set("file", blob, "margaridaData.sav");
 
     // Send the request to the server
     const res = await fetch(
@@ -42,11 +43,11 @@ const sendRequest = async () => {
 
     // If the response is a JSON file, you can fetch it as follows
     // It is then stored in an object you can access with simple dot notation
-    // const jsonRes = await res.json();
-    // console.log("Response received:", jsonRes);
+    const jsonRes = await res.json();
+    console.log("Response received:", jsonRes);
 
     // Fetch the raw data of the response, which is a ZIP file
-    const rawFileData = await res.arrayBuffer();
+    /*const rawFileData = await res.arrayBuffer();
 
     // Extract the files from the ZIP
     const zipFile = await zip.loadAsync(rawFileData);
@@ -65,7 +66,7 @@ const sendRequest = async () => {
         await fs.ensureDir(path.dirname(filePath));
         await writeFile(filePath, fileContent);
       }
-    }
+    }*/
   } catch (err) {
     // Log any errors that occur
     console.error("Error sending request:", err);
