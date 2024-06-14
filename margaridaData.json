@@ -1,0 +1,29 @@
+
+{ "AscaleX": "yes",
+  "AscaleY": "yes",
+  "F0": "Free",
+  "F1": "Free",
+  "Funcx0": "auto",
+  "Funcy0": "auto",
+  "SelectedDataSet": "tags.txt",
+  "Tags": [
+    "tags.txt"
+  ],
+  "Num": 100,
+  "Dados": "# DATA dum = 1\n# TAG = tags.txt\n1 1 0.1\n2 2 0.1\n3 3 0.1\n4 4 0.1",
+  "FitType": "Individual",
+  "Function": "a*x+b",
+  "Parameters": "a,b",
+  "Pmax0": "",
+  "Pmax1": "",
+  "Pmin0": "",
+  "Pmin1": "",
+  "Pval0": 1,
+  "Pval1": 1,
+  "X": "x",
+  "Xmax": "1000",
+  "Xmin": "-1000",
+  "Y": "y",
+  "Ymax": "1000",
+  "Ymin": "-1000"
+}

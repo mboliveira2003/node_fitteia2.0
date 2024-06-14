@@ -11,7 +11,7 @@ const zip = new JSZip();
 const sendRequest = async () => {
   try {
     // Read the content of the file
-    const fileContents = await readFile("./margaridaData.sav");
+    const fileContents = await readFile("./margaridaData.json");
 
     // Create a blob from the file content
     const blob = new Blob([fileContents]);
@@ -26,11 +26,11 @@ const sendRequest = async () => {
 
     // Attach the file to the body
     // Allowed files include .json and .sav
-    body.set("file", blob, "margaridaData.sav");
+    body.set("file", blob, "margaridaData.json");
 
     // Send the request to the server
     const res = await fetch(
-      "http://onefite-t.vps.tecnico.ulisboa.pt:8142/fit",
+      "http://localhost:8142/fit",
       {
         method: "POST",
         body,
